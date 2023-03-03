@@ -11,7 +11,7 @@ namespace Kernel.Request
     public  class ProdutoRequest
     {
         public int Id { get; set; }
-        public bool Ativo { get; set; }
+        public bool Ativo { get; set; } = true;
         public DateTime CriadoEm { get; set; }       
         public string Nome { get; set; }  
         public string CodigoBarras { get; set; }
