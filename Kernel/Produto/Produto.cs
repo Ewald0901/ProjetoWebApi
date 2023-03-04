@@ -8,13 +8,13 @@ namespace Kernel
 {
     public class Produto : ProdutoDto
     {
-        static Persistencia _ctx;
-        private static string erroNomeObrigatorio = "Nome do produto é obrigatório";
-        private static string produtoExiste = "O produto informado já existe cadastrado";
-        private static string produtoNaoEncontrado = "O produto informad não foi encontrado";
-        private static string produtoVencido = "O produto esta vencido";
-        private static string produtoDataFabricacaoNofuturo = "O produto informado esta com data de fabricação no futuro";
-        private static string produtoDataFabricacaoIgualOuMaiorDataValidade = "A data de fabricação não pode ser maior ou igual a data de validade";
+        readonly Persistencia _ctx;
+        private readonly string erroNomeObrigatorio = "Nome do produto é obrigatório";
+        private readonly string produtoExiste = "O produto informado já existe cadastrado";
+        private readonly string produtoNaoEncontrado = "O produto informad não foi encontrado";
+        private readonly string produtoVencido = "O produto esta vencido";
+        private readonly string produtoDataFabricacaoNofuturo = "O produto informado esta com data de fabricação no futuro";
+        private readonly string produtoDataFabricacaoIgualOuMaiorDataValidade = "A data de fabricação não pode ser maior ou igual a data de validade";
         public Produto()
         {
             _ctx = new Persistencia(new Repositorio());
@@ -73,7 +73,7 @@ namespace Kernel
             if (!string.IsNullOrEmpty(query.CodigoBarras))
                 filter.And(a => a.CodigoBarras.ToUpper().Equals(query.CodigoBarras.Trim().ToUpper()));
 
-            return _ctx.Produto.Listar(filter, orderBy, null, null, "").ToList();//.ToPaginatedRest(query.page.Value, query.itensPorPagina.Value);
+            return _ctx.Produto.Listar(filter, orderBy, null, null, "").ToList();
         }
         public Produto Editar()
         {

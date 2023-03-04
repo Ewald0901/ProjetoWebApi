@@ -28,11 +28,7 @@ namespace Kernel.Mapper
             mapperResponse = configurationResponse.CreateMapper();
             mapperRequest = configurationRequest.CreateMapper();
 
-            //public AutoMapping()
-            //{
-            //    CreateMap<ProdutoRequest, Produto>();
-            //    CreateMap<Produto, ProdutoRequest>();
-            //}
+            
         }
     }
 }
