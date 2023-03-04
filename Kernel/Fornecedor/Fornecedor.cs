@@ -8,15 +8,15 @@ namespace Kernel
 {
     public class Fornecedor : FornecedorDto
     {
-        static Persistencia _ctx;
-        public static string fornecedorJaExiste = "Esse fornecedor já esta cadastrado";
+        readonly Persistencia _context;
+        public readonly string fornecedorJaExiste = "Esse fornecedor já esta cadastrado";
         public Fornecedor()
         {
-            _ctx = new Persistencia(new Repositorio());
+            _context = new Persistencia(new Repositorio());
         }
         public Fornecedor(Persistencia persistencia)
         {
-            _ctx = persistencia;
+            _context = persistencia;
         }
         public FornecedorResponse Salvar() 
         {
@@ -34,25 +34,25 @@ namespace Kernel
                 throw new Exception(erro);
             }
 
-            Fornecedor fornecedor = _ctx.Fornecedor.Salvar(this);
+            Fornecedor fornecedor = _context.Fornecedor.Salvar(this);
 
-            _ctx.Fornecedor.SaveChanges();
+            _context.Fornecedor.SaveChanges();
             return Mapear(fornecedor); ;
 
         }
         public FornecedorResponse Obter(int Id) 
         {
-            Fornecedor fornecedor = _ctx.Fornecedor.Obter(Id);
+            Fornecedor fornecedor = _context.Fornecedor.Obter(Id);
 
             return Mapear(fornecedor);
         }
         public FornecedorResponse Excluir(int Id) 
         {
-            Fornecedor fornecedor = _ctx.Fornecedor.Obter(Id);
+            Fornecedor fornecedor = _context.Fornecedor.Obter(Id);
 
             fornecedor.Ativo = false;
-            _ctx.Fornecedor.Alterar(fornecedor);
-            _ctx.Fornecedor.SaveChanges();
+            _context.Fornecedor.Alterar(fornecedor);
+            _context.Fornecedor.SaveChanges();
 
             return Mapear(fornecedor);
 
@@ -72,8 +72,8 @@ namespace Kernel
                 }
                 throw new Exception(erro);
             }
-            Fornecedor fornecedor = _ctx.Fornecedor.Alterar(this);
-            _ctx.Fornecedor.SaveChanges();
+            Fornecedor fornecedor = _context.Fornecedor.Alterar(this);
+            _context.Fornecedor.SaveChanges();
 
             return Mapear(fornecedor);
         }
@@ -94,7 +94,7 @@ namespace Kernel
             if (!string.IsNullOrEmpty(query.Cnpj))
                 filter.And(a => a.Cnpj.ToUpper().Equals(query.Cnpj.Trim().ToUpper()));
 
-            return _ctx.Fornecedor.Listar(filter, orderBy, null, null, "").Select(f => new FornecedorResponse()
+            return _context.Fornecedor.Listar(filter, orderBy, null, null, "").Select(f => new FornecedorResponse()
                     {
                         CnpjFornecedor = f.Cnpj,
                         DescricaoFornecedor = f.Descricao,
@@ -112,7 +112,7 @@ namespace Kernel
             filter.And(p => p.Cnpj.ToUpper().Equals(fornecedor.Cnpj.Trim().ToUpper()));
             filter.And(p => p.Nome.ToUpper().Equals(fornecedor.Nome.Trim().ToUpper()));
 
-            Fornecedor _fornecedor = _ctx.Fornecedor.Obter(filter);
+            Fornecedor _fornecedor = _context.Fornecedor.Obter(filter);
 
             if (_fornecedor != null)
                 erros.Add(fornecedorJaExiste);

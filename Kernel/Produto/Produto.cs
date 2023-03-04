@@ -8,8 +8,8 @@ namespace Kernel
 {
     public class Produto : ProdutoDto
     {
-        readonly Persistencia _ctx;
-        private readonly string erroNomeObrigatorio = "Nome do produto é obrigatório";
+        readonly Persistencia _context;
+        private readonly string nomeObrigatorio = "Nome do produto é obrigatório";
         private readonly string produtoExiste = "O produto informado já existe cadastrado";
         private readonly string produtoNaoEncontrado = "O produto informad não foi encontrado";
         private readonly string produtoVencido = "O produto esta vencido";
@@ -17,11 +17,11 @@ namespace Kernel
         private readonly string produtoDataFabricacaoIgualOuMaiorDataValidade = "A data de fabricação não pode ser maior ou igual a data de validade";
         public Produto()
         {
-            _ctx = new Persistencia(new Repositorio());
+            _context = new Persistencia(new Repositorio());
         }
         public Produto(Persistencia persistencia)
         {
-            _ctx = persistencia;
+            _context = persistencia;
         }
         public Produto Salvar()
         {
@@ -40,8 +40,8 @@ namespace Kernel
                 throw new Exception(erro);
             }
 
-            Produto produto = _ctx.Produto.Salvar(this);
-            _ctx.Produto.SaveChanges();
+            Produto produto = _context.Produto.Salvar(this);
+            _context.Produto.SaveChanges();
             return produto;
         }
         public Produto Obter(ProdutoQuery query)
@@ -54,7 +54,7 @@ namespace Kernel
             if (!string.IsNullOrEmpty(query.CodigoBarras))
                 filter.And(a => a.CodigoBarras == query.CodigoBarras.Trim());
 
-            return _ctx.Produto.Obter(filter, "");
+            return _context.Produto.Obter(filter, "");
         }
         public List<Produto> Listar(ProdutoQuery query)
         {
@@ -73,7 +73,7 @@ namespace Kernel
             if (!string.IsNullOrEmpty(query.CodigoBarras))
                 filter.And(a => a.CodigoBarras.ToUpper().Equals(query.CodigoBarras.Trim().ToUpper()));
 
-            return _ctx.Produto.Listar(filter, orderBy, null, null, "").ToList();
+            return _context.Produto.Listar(filter, orderBy, null, null, "").ToList();
         }
         public Produto Editar()
         {
@@ -90,20 +90,20 @@ namespace Kernel
                 }
                 throw new Exception(erro);
             }
-            _ctx.Produto.Alterar(this);
-            _ctx.Produto.SaveChanges();
+            _context.Produto.Alterar(this);
+            _context.Produto.SaveChanges();
 
             return this;
         }
         public Produto Excluir(int Id)
         {
-            Produto produto = _ctx.Produto.Obter(Id);
+            Produto produto = _context.Produto.Obter(Id);
             if (produto == null)
                 throw new Exception(produtoNaoEncontrado);
 
             produto.Ativo = false;
-            _ctx.Produto.Alterar(produto);
-            _ctx.Produto.SaveChanges();
+            _context.Produto.Alterar(produto);
+            _context.Produto.SaveChanges();
             return produto;
         }
         public (bool valido, List<string> erros) Validar(Produto produto)
@@ -115,7 +115,7 @@ namespace Kernel
             filter.And(p => p.CodigoBarras.ToUpper().Equals(produto.CodigoBarras.Trim().ToUpper()));
             filter.And(p => p.Nome.ToUpper().Equals(produto.Nome.Trim().ToUpper()));
 
-            Produto _prod = _ctx.Produto.Obter(filter);
+            Produto _prod = _context.Produto.Obter(filter);
 
             if (_prod != null)
                 erros.Add(produtoExiste);
