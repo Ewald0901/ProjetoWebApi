@@ -1,6 +1,6 @@
-vs
-ApiTeste/bin/Debug
-ApiTeste/obj
-Kernel/bin
-Kernel/obj
-ApiTeste/Model
+.vs/
+ApiTeste/bin/Debug/
+ApiTeste/obj/
+Kernel/bin/
+Kernel/obj/
+ApiTeste/Model/
