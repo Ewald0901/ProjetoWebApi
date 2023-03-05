@@ -130,7 +130,7 @@ namespace Kernel
                 erros.Add(produtoDataFabricacaoNofuturo);
 
             if (string.IsNullOrEmpty(produto.Nome))
-                erros.Add(erroNomeObrigatorio);
+                erros.Add(nomeObrigatorio);
             if (erros.Count() > 0)
                 valido = false;
 
